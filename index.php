@@ -5,7 +5,6 @@ include 'Controleur.php';
 function chargerPage()
 {
 	$monControleur = new Controleur();
-	echo 'prout';
 	$monControleur->afficheEntete();
 		if(isset($_GET['login']))
 		{
