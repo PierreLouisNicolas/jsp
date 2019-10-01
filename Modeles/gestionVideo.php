@@ -167,17 +167,21 @@ Class gestionVideo
 		return $resultat;
 	}			
 		
-
+	public function estClientActif($loginClient)
+	{
+	    $resultat=$this->maBD->verificationClientActif($loginClient);
+	    return $resultat;
+	}	
 
 
 
 //METHODE INSERANT UN CLIENT----------------------------------------------------------------------------------------------------------
-	public function ajouteUnClient($unIdClient, $unNomClient, $unPrenomClient, $unEmailClient, $uneDateAbonnement)
+	public function ajouteUnClient($unNomClient, $unPrenomClient, $unEmailClient, $uneDateAbonnement, $unLog, $unPwd)
 		{
 		//insertion du client dans la base de données
-		$sonNumero = $this->maBD->insertClient($unIdClient, $unNomClient, $unPrenomClient, $unEmailClient, $uneDateAbonnement);
+		    $sonNumero = $this->maBD->insertClient($unNomClient, $unPrenomClient, $unEmailClient, $uneDateAbonnement, $unLog, $unPwd);
 		//instanciation du client et ajout de celui-ci dans la collection
-		$this->tousLesClients->ajouteUnClient($unIdClient, $unNomClient, $unPrenomClient, $unEmailClient, $uneDateAbonnement);
+		    $this->tousLesClients->ajouteUnClient($sonNumero, $unNomClient, $unPrenomClient, $unEmailClient, $uneDateAbonnement, $unLog, $unPwd);
 		}
 	//METHODE INSERANT UN FILM----------------------------------------------------------------------------------------------------------
 	public function ajouteUnFilm($unIdFilm,$unTitreFilm, $unRealisateurFilm, $unIdGenre,$uneDureeFilm)

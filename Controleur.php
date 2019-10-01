@@ -101,7 +101,35 @@ class Controleur
 			//CAS ajouter un utilisateur ------------------------------------------------------------------------------
 			case 'nouveauLogin' :
 				// ici il faut pouvoir recuperer un nouveau utilisateur
-				require 'Vues/construction.php';
+			    $nom = $_POST['nomClient'];
+			    $pre = $_POST['prenomClient'];
+			    $email = $_POST['emailClient'];
+			    $date = $_POST['dateAbonnementClient'];
+			    $log = $_POST['login'];
+			    $pass = $_POST['password'];
+			    if($this->maVideotheque->verifLogin($_POST['login'], $_POST['password']) < 1)
+			    {		        
+			        $this->maVideotheque->ajouteUnClient($nom, $pre, $email, $date, $log, $pass);
+			        session_destroy();
+			        echo "</nav>
+									<div class='container h-100'>
+										<div class='row h-100 justify-content-center align-items-center'>
+											<span class='text-white'>Compte créé</span>
+										</div>
+									</div>
+									<meta http-equiv='refresh' content='1;index.php?login=".$log."&password=".$pass."&vue=compte&action=verifLogin'>";
+			    }
+			    else 
+			    {
+			        session_destroy();
+			        echo "</nav>
+									<div class='container h-100'>
+										<div class='row h-100 justify-content-center align-items-center'>
+											<span class='text-white'>Login déja utilisé</span>
+										</div>
+									</div>
+									<meta http-equiv='refresh' content='1;index.php'>";
+			    }
 				break;	
 			//CAS verifier un utilisateur ------------------------------------------------------------------------------
 			case 'verifLogin' :
@@ -112,6 +140,8 @@ class Controleur
 				$unPassword=$_GET['password'];
 				$resultat=$this->maVideotheque->verifLogin($unLogin, $unPassword);
 						//si le client existe alors j'affiche le menu et la page visuGenre.php
+				if($this->maVideotheque->estClientActif($unLogin))
+				{
 						if($resultat==1)
 						{
 							require 'Vues/menu.php';
@@ -130,6 +160,7 @@ class Controleur
 									</div>
 									<meta http-equiv='refresh' content='1;index.php'>";
 						}
+				}
 				break;	
 			}
 		}

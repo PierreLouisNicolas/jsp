@@ -17,18 +17,18 @@ class accesBD
 	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	public function __construct()
 		{
-		// ORDI PROFSIO
+		// ORDI co_bdd_distante
 		$this->hote="172.16.0.50";
 		$this->port="";
 		$this->login="ALT19NICOLAS";
 		$this->passwd="pln-4898";
 		$this->base="videoppe3_guyader_elissalde_nicolas";
 		
-		// ORDI DEV2
+		// ORDI co_bdd_locale
 		/*$this->hote = "localhost";
 		$this->port = "";
-		$this->login = "Panda";
-		$this->passwd = "UgbNu74!";
+		$this->login = "root";
+		$this->passwd = "";
 		$this->base = "videoppe3";*/
 		$this->connexion();
 		
@@ -95,10 +95,9 @@ class accesBD
 	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	public function insertClient($unNomClient, $unPrenomClient, $unEmailClient, $uneDateAbonnement,$unLoginClient,$unPwdClient)
 		{
-		//génération automatique de l'identifiant
 		$sonId = $this->donneProchainIdentifiant("client","idClient");
 		
-		$requete = $this->conn->prepare("INSERT INTO CLIENT (nomClient,prenomClient, emailClient, dateAbonnementClient,loginClient, pwdClient) VALUES (?,?,?,?,?,?)");
+		$requete = $this->conn->prepare("INSERT INTO CLIENT (nomClient,prenomClient, emailClient, dateAbonnementClient,login, pwd, actif) VALUES (?,?,?,?,?,?,?)");
 		//définition de la requête SQL
 		$requete->bindValue(1,$unNomClient);
 		$requete->bindValue(2,$unPrenomClient);
@@ -106,13 +105,12 @@ class accesBD
 		$requete->bindValue(4,$uneDateAbonnement);
 		$requete->bindValue(5,$unLoginClient);
 		$requete->bindValue(6,$unPwdClient);
+		$requete->bindValue(7,0);
 		//exécution de la requête SQL
 		if(!$requete->execute())
 		{
 			die("Erreur dans insertClient : ".$requete->errorCode());
 		}
-
-		//retour de l'identifiant du nouveau tuple
 		return $sonId;
 		}
 	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -313,7 +311,7 @@ class accesBD
 		//$prochainId[0]=0;
 		//définition de la requête SQL
 		$stringQuery = $this->specialCase("SELECT * FROM ",$uneTable);
-		echo $stringQuery;
+		//echo $stringQuery;
 		$requete = $this->conn->prepare($stringQuery);
 		$requete->bindValue(1,$unIdentifiant);
 
@@ -392,6 +390,34 @@ class accesBD
 			die('Erreur sur donneProchainIdentifiantEpisode : '+$requete->errorCode());
 		}
 		}	
+		
+	public function verificationClientActif($loginClient)
+	{
+	    $uneTable = "CLIENT";
+	    $stringQuery = $this->specialCase("SELECT actif FROM ",$uneTable," WHERE login LIKE ",$loginClient,";");
+	    $requete = $this->conn->prepare($stringQuery);
+	    
+	    if($requete->execute())
+	    {
+	        while($row = $requete->fetch(PDO::FETCH_NUM))
+	        {
+	            echo $loginClient;
+	            echo $row[0];
+	            if($row[0] == 1)
+	            {
+	                return(true);
+	            }
+	            elseif($row[0] == 0)
+	            {
+	                return(false);
+	            }
+	        }
+	    }
+	    else
+	    {
+	        die('Erreur sur estClientActif : '+$requete->errorCode());
+	    }
+	}
 	}
 
 ?>

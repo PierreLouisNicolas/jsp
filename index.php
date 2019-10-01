@@ -74,7 +74,7 @@ function chargerPage()
                                         </form>
                                     </td>
                                     <td class='justify-content-center td-table'>
-                                        <form href = 'index.php?vue=compte&action=nouveauLogin' method='post'>
+                                        <form action='index.php?vue=compte&action=nouveauLogin&login=new' method='post'>
                                             <input class='form-group' type='text' name='nomClient' placeholder='saisir votre nom'/><br>
                                             <input class='form-group' type='text' name='prenomClient' placeholder='Saisir votre prenom'/><br>
                                             <input class='form-group' type='text' name='emailClient' placeholder='Saisir votre email'/><br>
