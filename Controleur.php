@@ -144,8 +144,13 @@ class Controleur
 				{
 						if($resultat==1)
 						{
-							require 'Vues/menu.php';
-							echo $this->maVideotheque->listeLesGenres();	
+						    echo "</nav>
+									<div class='container h-100'>
+										<div class='row h-100 justify-content-center align-items-center'>
+											<span class='text-white'>Connecté</span>
+										</div>
+									</div>
+									<meta http-equiv='refresh' content='1;index.php?vue=genre&action=visualiser'>";
 						}
 						else
 						{
@@ -160,6 +165,15 @@ class Controleur
 									</div>
 									<meta http-equiv='refresh' content='1;index.php'>";
 						}
+				}
+				else
+				{
+				    echo "</nav>
+									<div class='container h-100'>
+										<div class='row h-100 justify-content-center align-items-center'>
+											<span class='text-white'>Compte actuellement inactif, veuillez nous envoyer votre chèque d'abonnement.</span>
+										</div>
+									</div>";
 				}
 				break;	
 			}
